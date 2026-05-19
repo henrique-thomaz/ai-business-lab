@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Business Lab - Alura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #181818;
+    --bg2:      #222222;
+    --bg3:      #2A2A2A;
+    --bg4:      #333333;
+    --border:   rgba(255,255,255,0.08);
+    --text:     #F2F2F2;
+    --muted:    #888888;
+    --muted2:   #AAAAAA;
+    --blue:     #4B6BFF;
+    --blue-h:   #3A5AEE;
+    --yellow:   #F5C518;
+    --green:    #1DB974;
+    --green-bg: rgba(29,185,116,0.12);
+    --orange:   #FF8A3D;
+    --orange-h: #E67632;
+    --pink:     #FF6BB5;
+    --purple:   #9B59FF;
+    --teal:     #06B6D4;
+    --amber:    #F59E0B;
+    --font:     'Nunito', system-ui, sans-serif;
+    --radius:   8px;
+    --radius-lg:12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-weight: 400;
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--bg); border-bottom: 3px solid var(--yellow);
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0.85rem 2rem;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+  .nav-logo-text { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+  .nav-badge {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
+    padding: 3px 12px; font-size: 11px; font-weight: 600; color: var(--muted2); white-space: nowrap;
+  }
+  .nav-links { display: flex; gap: 0.25rem; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none;
+    padding: 6px 14px; border-radius: var(--radius); transition: background 0.15s, color 0.15s; cursor: pointer;
+  }
+  .nav-links a:hover { background: var(--bg3); color: var(--text); }
+
+  /* ============ PAGE ============ */
+  .page { max-width: 1100px; margin: 0 auto; padding: 6.5rem 2rem 4rem; }
+  .section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+
+  /* ============ LABELS ============ */
+  .label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green); background: var(--green-bg);
+    padding: 4px 10px; border-radius: 4px; margin-bottom: 1.5rem;
+  }
+  .label-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; display: inline-block; }
+
+  /* ============ HERO ============ */
+  .hero { padding: 5rem 0 4rem; border-bottom: 1px solid var(--border); }
+  .hero-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; }
+  .hero-title { font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -1.5px; color: var(--text); margin-bottom: 1.5rem; }
+  .hero-title .accent-italic { color: var(--blue); font-style: italic; font-weight: 700; }
+  .hero-subtitle { font-size: clamp(1.4rem, 2.8vw, 2rem); color: var(--muted2); font-weight: 600; margin-bottom: 1.25rem; margin-top: 0; line-height: 1.2; letter-spacing: -0.3px; }
+  .hero-sub { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted2); max-width: 760px; line-height: 1.6; font-weight: 400; }
+  .hero-sub strong { color: var(--text); font-weight: 600; }
+  .hero-cta { margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .hero-meta { font-size: 12px; color: var(--muted); }
+  .btn-primary {
+    background: var(--blue); color: #fff; border: none; padding: 10px 22px;
+    border-radius: var(--radius); font-family: var(--font); font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary:hover { background: var(--blue-h); }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, auto); gap: 2.5rem;
+    margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);
+  }
+  .hero-stat-num { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 0.25rem; }
+  .hero-stat-num .accent { color: var(--blue); }
+  .hero-stat-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ============ TYPOGRAPHY ============ */
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; letter-spacing: -0.5px; color: var(--text); line-height: 1.2; margin-bottom: 0.75rem; }
+  .section-title .accent { color: var(--blue); }
+  .section-title .accent-green { color: var(--green); }
+  .section-title .accent-orange { color: var(--orange); }
+  .section-sub { font-size: 15px; color: var(--muted); max-width: 900px; line-height: 1.65; margin-bottom: 2.5rem; }
+
+  /* ============ QUOTE ============ */
+  .quote-block {
+    background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--yellow);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem; font-size: 1rem; font-weight: 600;
+    color: var(--text); line-height: 1.55; margin-top: 2rem;
+  }
+  .quote-author { display: block; font-style: normal; font-weight: 500; font-size: 12px; color: var(--muted); margin-top: 0.75rem; }
+
+  /* ============ PAINS GRID ============ */
+  .pains-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 2rem; }
+  .pain-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; transition: border-color 0.2s, transform 0.2s; }
+  .pain-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-2px); }
+  .pain-icon { font-size: 18px; margin-bottom: 0.5rem; display: block; }
+  .pain-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+  .pain-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ============ PILLAR CARDS ============ */
+  .pillars-intro {
+    background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--blue);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem; font-size: 14px; font-weight: 500;
+    color: var(--muted2); line-height: 1.6; margin-bottom: 2rem;
+  }
+  .pillars-intro strong { color: var(--text); }
+
+  .pillars-list { display: flex; flex-direction: column; gap: 0; margin-top: 0; }
+
+  .pillar-row {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 0; border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .pillar-row:last-child { border-bottom: none; }
+  .pillar-row:hover { background: var(--bg2); }
+
+  .pillar-num {
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 1.75rem 0 1.75rem 0;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--muted); font-variant-numeric: tabular-nums;
+  }
+  .pillar-num span {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    background: var(--bg3); border: 1px solid var(--border);
+  }
+
+  .pillar-row.p1 .pillar-num span { background: rgba(75,107,255,0.15); color: var(--blue); border-color: rgba(75,107,255,0.3); }
+  .pillar-row.p2 .pillar-num span { background: rgba(29,185,116,0.12); color: var(--green); border-color: rgba(29,185,116,0.3); }
+  .pillar-row.p3 .pillar-num span { background: rgba(245,158,11,0.12); color: var(--amber); border-color: rgba(245,158,11,0.3); }
+  .pillar-row.p4 .pillar-num span { background: rgba(255,138,61,0.12); color: var(--orange); border-color: rgba(255,138,61,0.3); }
+  .pillar-row.p5 .pillar-num span { background: rgba(155,89,255,0.12); color: var(--purple); border-color: rgba(155,89,255,0.3); }
+
+  .pillar-body { padding: 1.75rem 1.5rem 1.75rem 0.25rem; }
+
+  .pillar-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.35rem; flex-wrap: wrap; }
+  .pillar-name { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .pillar-tag {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px;
+  }
+  .pillar-row.p1 .pillar-tag { color: var(--blue); background: rgba(75,107,255,0.12); }
+  .pillar-row.p2 .pillar-tag { color: var(--green); background: rgba(29,185,116,0.12); }
+  .pillar-row.p3 .pillar-tag { color: var(--amber); background: rgba(245,158,11,0.12); }
+  .pillar-row.p4 .pillar-tag { color: var(--orange); background: rgba(255,138,61,0.12); }
+  .pillar-row.p5 .pillar-tag { color: var(--purple); background: rgba(155,89,255,0.12); }
+
+  .pillar-sub { font-size: 12px; font-style: italic; color: var(--muted); margin-bottom: 0.6rem; }
+  .pillar-desc-text { font-size: 13.5px; color: var(--muted2); line-height: 1.6; margin-bottom: 0.9rem; max-width: 720px; }
+
+  .pillar-tools-row { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
+  .pillar-tools-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+  .tool-chip {
+    font-size: 11px; color: var(--muted2); background: var(--bg3);
+    border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  /* ============ TOOLS SECTION ============ */
+  .tools-section { margin-top: 3rem; }
+  .tools-section-title { font-size: 11px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
+  .tools-row {
+    display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem;
+    padding: 1rem 0; border-bottom: 1px solid var(--border); align-items: center;
+  }
+  .tools-row:last-child { border-bottom: none; }
+  .tools-label { font-size: 13px; font-weight: 700; color: var(--text); display: block; margin-bottom: 2px; }
+  .tools-label-sub { font-size: 11px; color: var(--muted); display: block; }
+  .tools-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* ============ JOURNEY DIAGRAM ============ */
+  .journey-block {
+    display: flex; align-items: stretch; gap: 0;
+    margin-top: 2.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .journey-step {
+    flex: 1; padding: 1.25rem 1rem; text-align: center;
+    position: relative; transition: background 0.2s;
+  }
+  .journey-step:not(:last-child)::after {
+    content: '→'; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+    font-size: 14px; color: var(--muted); z-index: 2;
+  }
+  .journey-step:not(:last-child) { border-right: 1px solid var(--border); }
+  .journey-step:hover { background: var(--bg3); }
+  .journey-step-n { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .journey-step-name { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 0.25rem; }
+  .journey-step-verb { font-size: 11px; color: var(--muted); font-style: italic; }
+
+  .journey-step.js1 { background: rgba(75,107,255,0.06); }
+  .journey-step.js2 { background: rgba(29,185,116,0.05); }
+  .journey-step.js3 { background: rgba(245,158,11,0.05); }
+  .journey-step.js4 { background: rgba(255,138,61,0.05); }
+  .journey-step.js5 { background: rgba(155,89,255,0.05); }
+
+  /* ============ PERSONA ============ */
+  .persona-card {
+    background: var(--bg2); border: 1px solid var(--border); border-top: 3px solid var(--blue);
+    border-radius: var(--radius-lg); padding: 2rem; margin-top: 1rem;
+  }
+  .persona-lead { font-size: 1.05rem; font-weight: 600; line-height: 1.5; color: var(--text); margin-bottom: 1.25rem; }
+  .persona-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+  .persona-tag {
+    font-size: 12px; font-weight: 600; color: var(--muted2);
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 4px; padding: 4px 10px;
+  }
+  .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.25rem; }
+  .persona-block-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .persona-block-text { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+
+  .prereq-card {
+    background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--muted);
+    border-radius: var(--radius); padding: 1rem 1.25rem; margin-top: 1.25rem;
+  }
+  .prereq-card-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 0.35rem; }
+  .prereq-card-text { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+  /* ============ DIFF GRID ============ */
+  .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 2rem; }
+  .diff-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem; }
+  .diff-card.bad { border-top: 3px solid var(--bg4); }
+  .diff-card.good { border-top: 3px solid var(--blue); }
+  .diff-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .diff-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+  .diff-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ============ RESULT CARD ============ */
+  .result-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 2.5rem; margin-top: 2rem; position: relative; overflow: hidden;
+  }
+  .result-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+  }
+  .result-row { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.25rem; color: var(--blue); }
+  .result-row.green { color: var(--green); }
+  .result-row.yellow { color: var(--yellow); }
+  .result-text { font-size: 14px; color: var(--muted2); line-height: 1.65; margin-top: 1.25rem; max-width: 680px; }
+
+  /* ============ CONNECTIONS ============ */
+  .conn-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+  .conn-block { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .conn-from-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.75rem; }
+  .conn-targets { display: flex; flex-direction: column; gap: 6px; }
+  .conn-target { font-size: 13px; color: var(--muted2); display: flex; align-items: baseline; gap: 6px; }
+  .arrow { color: var(--muted); font-size: 11px; }
+
+  /* ============ FADE IN ============ */
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--bg); border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+  }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+  .footer-text { font-size: 12px; color: var(--muted); }
+  .footer-link { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.15s; cursor: pointer; }
+  .footer-link:hover { color: var(--text); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 800px) {
+    .pains-grid { grid-template-columns: 1fr 1fr; }
+    .diff-grid { grid-template-columns: 1fr; }
+    .persona-grid { grid-template-columns: 1fr; }
+    .conn-list { grid-template-columns: 1fr; }
+    .journey-block { flex-direction: column; }
+    .journey-step:not(:last-child)::after { content: '↓'; right: auto; top: auto; bottom: -14px; left: 50%; transform: translateX(-50%); }
+    .journey-step:not(:last-child) { border-right: none; border-bottom: 1px solid var(--border); }
+    .tools-row { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+  @media (max-width: 500px) {
+    .pains-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="nav-logo-text">Alura</span>
+      <span class="nav-badge">AI Business Lab</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#problema">Problema</a></li>
+      <li><a href="#jornada">Jornada</a></li>
+      <li><a href="#pilares">Pilares</a></li>
+      <li><a href="#publico">Público</a></li>
+      <li><a href="#diferencial">Diferencial</a></li>
+      <li><a href="#resultado">Resultado</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <p class="hero-eyebrow">Proposta · Hub de Formação · AI Business Lab</p>
+    <h1 class="hero-title">IA que <span class="accent-italic">trabalha</span><br>com você.</h1>
+    <p class="hero-subtitle">IA aplicada ao trabalho - sem virar dev</p>
+    <p class="hero-sub">Hub de formação prática para profissionais de negócios que precisam <strong>aplicar IA no dia a dia de trabalho</strong>, sem precisar virar desenvolvedor.</p>
+    <div class="hero-cta">
+      <a href="#pilares" class="btn-primary">↓ Ver pilares</a>
+      <span class="hero-meta">5 pilares · No-code · Jornada progressiva</span>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <p class="hero-stat-num"><span class="accent">5</span></p>
+        <p class="hero-stat-label">Pilares de formação</p>
+      </div>
+      <div>
+        <p class="hero-stat-num">No-code</p>
+        <p class="hero-stat-label">Sem programação</p>
+      </div>
+      <div>
+        <p class="hero-stat-num">Progressivo</p>
+        <p class="hero-stat-label">Do letramento à maturidade</p>
+      </div>
+      <div class="hero-cta">
+       <p class="hero-stat-label">Acesse as documentações (Sharepoint)</p>         
+       <a href="https://miro.com/welcomeonboard/bGZ1OXV5M2xkd2FmWEEyM0pyall1TGFjVTlBYVJZOHRsWWhUMVd6RWJoeHg3ZmtiOGtac0lnN1ptQjY3M3Q4dDVpMG5ET0IzL1VNVmdFc3FpdzVuUW5nQlVoRjVzbkVLZ3RuWGRvRjhJUmF6OFBGRXdjRnlwQ1MvZkE2aXp2by9BS2NFMDFkcUNFSnM0d3FEN050ekl3PT0hdjE=?share_link_id=144948270607" class="btn-primary" target="_blank">Miro</a>
+       <a href="https://fiapcom-my.sharepoint.com/:w:/g/personal/henrique_bruscagin_alura_com_br/IQAOjpt0n_YzSZnNaBveMLw5AQLqZpLlBWoVd8cidCKcZUc?e=LpCNBa" class="btn-primary" target="_blank">FAQ e Persona</a>
+       <a href="https://fiapcom-my.sharepoint.com/:w:/g/personal/henrique_bruscagin_alura_com_br/IQCZyd_wmFItRJRPYG48lorJAdTuPAGGgpBurY2wVkIbN08?e=eem2ek" class="btn-primary" target="_blank">Apresentação e Pilares</a>
+       <a href="https://fiapcom-my.sharepoint.com/:w:/g/personal/henrique_bruscagin_alura_com_br/IQBiRiuDHKBqRr1LtZME_IZlARpf60oQ7K6Nf-d1Y3tYti8?e=eouQ5T" class="btn-primary" target="_blank">Ponto de encontro - Business & Leadership</a>        
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEMA ============ -->
+  <section class="section fade-in" id="problema">
+    <span class="label"><span class="label-dot"></span>O problema</span>
+    <h2 class="section-title">O paradoxo do profissional <span class="accent">moderno com IA</span>.</h2>
+    <p class="section-sub">A pressão para usar IA é real. A clareza sobre como aplicá-la, não. Profissionais testam ferramentas no escuro, gastam tempo em tarefas que IA poderia fazer e dependem de devs para o que deveria ser autônomo.</p>
+
+    <div class="quote-block">
+      "É perceptível que IA deixou de ser diferencial e já é considerada infraestrutura. Mas como implantá-la de forma estratégica e inteligente para transformá-la em resultado real?"
+      <span class="quote-author">- A pergunta que define o público do Lab</span>
+    </div>
+
+   <div class="quote-block">
+      "O AI Business Lab existe para fechar essa distância: entre "sei que IA importa" e "consigo aplicar IA de forma útil, segura e escalável no meu trabalho"?"
+      <span class="quote-author">- A resposta que conduz à jornada</span>
+    </div>
+
+
+    <div class="pains-grid" style="margin-top:2.5rem;">
+      <div class="pain-card">
+        <span class="pain-icon">⚡</span>
+        <p class="pain-title">Excesso operacional</p>
+        <p class="pain-desc">Tarefas repetitivas consomem tempo que deveria ir para decisão estratégica.</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-icon">🔗</span>
+        <p class="pain-title">Ferramentas desconectadas</p>
+        <p class="pain-desc">Dezenas de apps no dia a dia, sem integração - retrabalho e perda de contexto.</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-icon">📊</span>
+        <p class="pain-title">Informação sem decisão</p>
+        <p class="pain-desc">Dados em abundância, mas dificuldade em transformar em insight acionável.</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-icon">🎯</span>
+        <p class="pain-title">IA sem método</p>
+        <p class="pain-desc">Sensação de testar ferramentas aleatoriamente, sem saber quando usar cada uma.</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-icon">⏳</span>
+        <p class="pain-title">Medo de ficar para trás</p>
+        <p class="pain-desc">Pressão crescente para adotar IA, sem clareza sobre por onde começar.</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-icon">🔒</span>
+        <p class="pain-title">Dependência técnica</p>
+        <p class="pain-desc">Precisar de dev para executar o que deveria ser autonomia do próprio profissional.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ JORNADA ============ -->
+  <section class="section fade-in" id="jornada">
+    <span class="label"><span class="label-dot"></span>Lógica da trilha</span>
+    <h2 class="section-title">Uma jornada que acompanha a <span class="accent">maturidade natural</span> do uso de IA.</h2>
+    <p class="section-sub">Cada pilar representa uma dimensão crítica da transformação profissional. Funcionam de forma independente, mas potencializam resultados quando combinados em uma jornada integrada.</p>
+
+    <div class="journey-block">
+      <div class="journey-step js1">
+        <p class="journey-step-n">Pilar 01</p>
+        <p class="journey-step-name">Fundamentos &amp; Letramento</p>
+        <p class="journey-step-verb">Base</p>
+      </div>
+      <div class="journey-step js2">
+        <p class="journey-step-n">Pilar 02</p>
+        <p class="journey-step-name">Eficiência e Colaboração</p>
+        <p class="journey-step-verb">Rotina diária</p>
+      </div>
+      <div class="journey-step js3">
+        <p class="journey-step-n">Pilar 03</p>
+        <p class="journey-step-name">Análise &amp; Decisão</p>
+        <p class="journey-step-verb">Dados</p>
+      </div>
+      <div class="journey-step js4">
+        <p class="journey-step-n">Pilar 04</p>
+        <p class="journey-step-name">Fluxos &amp; Agentes</p>
+        <p class="journey-step-verb">Automação (no-code)</p>
+      </div>
+      <div class="journey-step js5">
+        <p class="journey-step-n">Pilar 05</p>
+        <p class="journey-step-name">Liderança &amp; Governança</p>
+        <p class="journey-step-verb">Pessoas e diretrizes</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PILARES ============ -->
+  <section class="section fade-in" id="pilares">
+    <span class="label"><span class="label-dot"></span>Os pilares</span>
+    <h2 class="section-title">Hub de IA aplicada - <span class="accent-green">no-code</span>, prático,<br>orientado a resultado.</h2>
+    <p class="section-sub">Não ensina programação. Não aprofunda em teoria. Ensina a aplicar IA no trabalho com casos reais, fluxos práticos e competências reutilizáveis. Cinco pilares que se conectam.</p>
+
+    <div class="pillars-intro">
+      <strong>Como ler esta estrutura:</strong> cada pilar tem independência didática - o participante pode entrar pelo que é mais urgente para a sua realidade. A progressão completa, porém, potencializa todos os resultados: do letramento à execução responsável.
+    </div>
+
+    <div class="pillars-list">
+
+      <!-- PILAR 1 -->
+      <div class="pillar-row p1">
+        <div class="pillar-num"><span>01</span></div>
+        <div class="pillar-body">
+          <div class="pillar-header">
+            <p class="pillar-name">Base</p>
+            <span class="pillar-tag">Fundamentos &amp; Letramento em IA</span>
+          </div>
+          <p class="pillar-sub">O ponto de partida para atuar com inteligência artificial</p>
+          <p class="pillar-desc-text">Estabelece a base necessária para qualquer profissional que deseja trabalhar com IA de forma tática e segura. O foco está no desenvolvimento do letramento: compreender o que é IA, como os modelos funcionam, quais são seus limites, riscos, oportunidades e impactos no ambiente corporativo. O participante aprende a interagir com assistentes generativos, construir prompts eficazes e interpretar respostas com pensamento crítico - desenvolvendo repertório, visão analítica e capacidade de tomada de decisão apoiada por IA.</p>
+          <div class="pillar-tools-row">
+            <span class="pillar-tools-label">Foco</span>
+            <span class="tool-chip">Letramento em IA</span>
+            <span class="tool-chip">Prompts eficazes</span>
+            <span class="tool-chip">Pensamento crítico</span>
+            <span class="tool-chip">Limites e riscos da IA</span>            
+          </div>
+        </div>
+      </div>
+
+      <!-- PILAR 2 -->
+      <div class="pillar-row p2">
+        <div class="pillar-num"><span>02</span></div>
+        <div class="pillar-body">
+          <div class="pillar-header">
+            <p class="pillar-name">Aplicação Cotidiana</p>
+            <span class="pillar-tag">Eficiência e Colaboração com IA</span>
+          </div>
+          <p class="pillar-sub">IA integrada às rotinas, comunicação e produção multimodal</p>
+          <p class="pillar-desc-text">Focado em ganho de eficiência operacional, aceleração de entregas e organização inteligente do trabalho. Explora como utilizar assistentes de IA para produção de textos, apresentações, resumos, pesquisas, comunicação corporativa e criação multimodal (texto, imagem, áudio e vídeo). As ferramentas são organizadas conforme os principais ecossistemas corporativos, com o objetivo de transformar a IA em uma extensão operacional do profissional - reduzindo tempo em tarefas repetitivas e ampliando capacidade de execução, análise e comunicação.</p>
+          <div class="pillar-tools-row">
+            <span class="pillar-tools-label">Ferramentas</span>
+	    <span class="tool-chip">Microsoft Copilot</span>
+            <span class="tool-chip">Google Gemini</span>
+            <span class="tool-chip">Claude</span>
+            <span class="tool-chip">Outlook · Teams · Word · Excel · PowerPoint</span>
+            <span class="tool-chip">Google Workspace</span>
+            <span class="tool-chip">NotebookLM</span>
+            <span class="tool-chip">Deep Research</span>
+            <span class="tool-chip">Gems</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PILAR 3 -->
+      <div class="pillar-row p3">
+        <div class="pillar-num"><span>03</span></div>
+        <div class="pillar-body">
+          <div class="pillar-header">
+            <p class="pillar-name">Análise &amp; Decisão com Dados</p>
+            <span class="pillar-tag">Inteligência de negócios</span>
+          </div>
+          <p class="pillar-sub">Transformando informação em análise estratégica</p>
+          <p class="pillar-desc-text">A formação evolui para o uso de IA aplicada à interpretação de dados, geração de relatórios e suporte à tomada de decisão. O foco deixa de ser apenas executar tarefas mais rápido e passa a ser compreender cenários, identificar tendências e gerar insights de negócio. A trilha aborda desde análises operacionais até construção de dashboards, leitura de indicadores, automatização de relatórios e geração de recomendações estratégicas - permitindo que profissionais não técnicos trabalhem dados de forma mais acessível, reduzindo dependência de equipes especializadas.</p>
+          <div class="pillar-tools-row">
+            <span class="pillar-tools-label">Ferramentas</span>
+            <span class="tool-chip">Excel com IA</span>
+            <span class="tool-chip">Power BI com IA</span>
+            <span class="tool-chip">Google Sheets com IA</span>
+            <span class="tool-chip">Data Studio com IA</span>            
+          </div>
+        </div>
+      </div>
+
+      <!-- PILAR 4 -->
+      <div class="pillar-row p4">
+        <div class="pillar-num"><span>04</span></div>
+        <div class="pillar-body">
+          <div class="pillar-header">
+            <p class="pillar-name">Automação &amp; Agentes de IA</p>
+            <span class="pillar-tag">Fluxos autônomos (no-code)</span>
+          </div>
+          <p class="pillar-sub">Fluxos autônomos e agentes de IA</p>
+          <p class="pillar-desc-text">Apresenta como criar fluxos de trabalho inteligentes capazes de integrar ferramentas, executar tarefas automaticamente e operar processos sem necessidade de programação tradicional. A formação prioriza plataformas no-code e low-code, tornando a automação acessível para profissionais de diferentes áreas. Os participantes aprendem a conectar sistemas, automatizar operações repetitivas, criar aprovações inteligentes, disparar fluxos condicionais e estruturar agentes capazes de executar tarefas de maneira autônoma - a transição da IA como ferramenta para IA como infraestrutura operacional.</p>
+          <div class="pillar-tools-row">
+            <span class="pillar-tools-label">Ferramentas</span>
+            <span class="tool-chip">Copilot Studio</span>
+            <span class="tool-chip">Power Automate</span>
+            <span class="tool-chip">Gemini Enterprise</span>
+            <span class="tool-chip">Workspace Studio</span>
+            <span class="tool-chip">Zapier</span>
+            <span class="tool-chip">Make</span>
+            <span class="tool-chip">n8n</span>            
+          </div>
+        </div>
+      </div>
+
+      <!-- PILAR 5 -->
+      <div class="pillar-row p5">
+        <div class="pillar-num"><span>05</span></div>
+        <div class="pillar-body">
+          <div class="pillar-header">
+            <p class="pillar-name">Liderança &amp; Governança</p>
+            <span class="pillar-tag">Escala responsável</span>
+          </div>
+          <p class="pillar-sub">Escalar IA com responsabilidade, cultura e visão estratégica</p>
+          <p class="pillar-desc-text">Aborda um dos desafios da transformação com IA: liderar pessoas, processos e decisões em um ambiente cada vez mais automatizado e orientado por dados. Aqui, a IA deixa de ser ferramenta operacional e passa a ser tratada como competência organizacional estratégica. A formação desenvolve liderança na era da IA, gestão da mudança, soft skills e metacompetências, cultura de inovação, ética aplicada, mitigação de vieses, privacidade, segurança, governança de modelos, compliance e políticas corporativas de uso responsável - preparando profissionais para implementar IA de forma sustentável, segura e alinhada aos valores da organização.</p>
+          <div class="pillar-tools-row">
+            <span class="pillar-tools-label">Práticas</span>
+            <span class="tool-chip">Gestão da mudança</span>
+            <span class="tool-chip">Ética em IA</span>
+            <span class="tool-chip">Privacidade &amp; LGPD</span>
+            <span class="tool-chip">Governança de modelos</span>
+            <span class="tool-chip">Compliance</span>
+            <span class="tool-chip">Supervisão humana</span>
+            <span class="tool-chip">Transparência algorítmica</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CURADORIA DE FERRAMENTAS -->
+    <div class="tools-section">
+      <p class="tools-section-title">Curadoria de ferramentas por camada</p>
+      <div class="tools-row">
+        <div>
+          <span class="tools-label">Eficiência no dia a dia</span>
+          <span class="tools-label-sub">Assistentes e suítes</span>
+        </div>
+        <div class="tools-list">
+          <span class="tool-chip">Gemini</span>
+          <span class="tool-chip">Copilot</span>
+          <span class="tool-chip">Microsoft 365</span>
+          <span class="tool-chip">Google Workspace</span>
+          <span class="tool-chip">NotebookLM</span>
+        </div>
+      </div>
+      <div class="tools-row">
+        <div>
+          <span class="tools-label">Análise e decisão</span>
+          <span class="tools-label-sub">Dados e BI com IA</span>
+        </div>
+        <div class="tools-list">
+          <span class="tool-chip">Excel com IA</span>
+          <span class="tool-chip">Power BI</span>
+          <span class="tool-chip">Google Sheets com IA</span>
+          <span class="tool-chip">Looker Studio</span>
+        </div>
+      </div>
+      <div class="tools-row">
+        <div>
+          <span class="tools-label">Automação no-code</span>
+          <span class="tools-label-sub">Fluxos sem programação</span>
+        </div>
+        <div class="tools-list">
+          <span class="tool-chip">Workspace Studio</span>
+          <span class="tool-chip">Gemini Enterprise</span>
+          <span class="tool-chip">Copilot Studio</span>
+          <span class="tool-chip">Power Automate</span>
+          <span class="tool-chip">n8n</span>
+          <span class="tool-chip">Make</span>
+          <span class="tool-chip">Zapier</span>
+        </div>
+      </div>
+      <div class="tools-row">
+        <div>
+          <span class="tools-label">Liderança</span>
+          <span class="tools-label-sub">Pessoas, uso seguro e responsável</span>
+        </div>
+        <div class="tools-list">
+          <span class="tool-chip">Compliance</span>
+          <span class="tool-chip">Políticas internas</span>
+          <span class="tool-chip">Revisão humana</span>
+          <span class="tool-chip">Controles de acesso</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PÚBLICO ============ -->
+  <section class="section fade-in" id="publico">
+    <span class="label"><span class="label-dot"></span>Público-alvo</span>
+    <h2 class="section-title">Para o profissional de negócios <span class="accent">com autonomia</span>.</h2>
+    <p class="section-sub">Quem resolve problemas, conecta áreas, organiza processos e influencia decisões - e precisa aumentar produtividade sem aumentar complexidade.</p>
+
+    <div class="persona-card">
+      <p class="persona-lead">Profissional de negócios com autonomia e responsabilidade - não atua como especialista técnico, mas precisa de execução mais inteligente e estratégica.</p>
+      <div class="persona-tags">
+        <span class="persona-tag">Analistas</span>
+        <span class="persona-tag">Coordenadores</span>
+        <span class="persona-tag">Especialistas</span>
+        <span class="persona-tag">Líderes de equipe</span>
+        <span class="persona-tag">Marketing</span>
+        <span class="persona-tag">RH</span>
+        <span class="persona-tag">Vendas</span>
+        <span class="persona-tag">Operações</span>
+        <span class="persona-tag">PMs</span>        
+      </div>
+      <div class="persona-grid">
+        <div>
+          <p class="persona-block-label">O que esse profissional faz?</p>
+          <p class="persona-block-text">Resolve problemas, conecta áreas, organiza processos, implementa melhorias e influencia decisões. Precisa aumentar produtividade sem aumentar complexidade.</p>
+        </div>
+
+        <div>
+          <p class="persona-block-label">Contexto de trabalho</p>
+          <p class="persona-block-text">Usa Excel, Sheets, ferramentas de criação e produtividade todos os dias. Não é dev, mas quer ser mais estratégico e menos operacional. Familiarizado com as ferramentas do trabalho, mas sem experiência formal em IA.</p>
+        </div>
+        <div>
+          <p class="persona-block-label">Iniciante em IA?</p>
+          <p class="persona-block-text">Sim, desde que sejam iniciantes em IA, não necessariamente iniciantes de carreira. A jornada começa pelo letramento e avança progressivamente. O pré-requisito é experiência de trabalho, não conhecimento técnico.</p>
+        </div>
+      </div>
+      <div class="prereq-card">
+        <p class="prereq-card-title">Não é trilha de iniciação técnica ou programação</p>
+        <p class="prereq-card-text">Pré-requisito: experiência de trabalho em contexto corporativo e uso básico de ferramentas de produtividade (Office, Workspace ou similares). Não precisa de conhecimento em programação ou IA - o Lab começa do zero conceitual.</p>
+        <p class="prereq-card-title">"Me ensine a pensar junto com a IA para orquestrar e executar tarefas, não a depender dela para tudo."</p>
+        <p class="prereq-card-text">- frase que resume a mentalidade do aluno ideal do AI Business Lab.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DIFERENCIAL ============ -->
+  <section class="section fade-in" id="diferencial">
+    <span class="label"><span class="label-dot"></span>Diferencial competitivo</span>
+    <h2 class="section-title">Não é mais do mesmo.<br>É <span class="accent-orange">repertório integrado</span>.</h2>
+    <p class="section-sub">O AI Business Lab conecta tudo num único hub aplicado ao trabalho real - do letramento à maturidade, em jornada progressiva.</p>
+
+    <div class="diff-grid">
+      <div class="diff-card bad">
+        <p class="diff-label">O mercado oferece</p>
+        <p class="diff-title">Cursos isolados de ferramentas</p>
+        <p class="diff-desc">Prompts, ChatGPT, ferramentas específicas. Aprende-se a usar peças soltas, sem entender como integrá-las. Alto apelo imediato, envelhecimento rápido. Sem método, sem progressão, sem governança.</p>
+      </div>
+      <div class="diff-card good">
+        <p class="diff-label">O AI Business Lab entrega</p>
+        <p class="diff-title">Hub integrado por contexto</p>
+        <p class="diff-desc">Fundamentos, produtividade, dados, automação e governança conectados em jornada progressiva. Aplicado ao trabalho real, com casos por área. Competências duráveis além das ferramentas do momento.</p>
+      </div>
+    </div>
+
+    <div class="quote-block" style="margin-top:2.5rem; border-left-color:var(--blue); font-weight:500;">
+      "Está surgindo um novo gap no mercado. Não entre quem programa e quem não programa, mas entre <strong style="color:var(--text); font-weight:700;">quem opera com IA com maturidade e quem continua no modelo anterior</strong>."
+    </div>
+  </section>
+
+  <!-- ============ RESULTADO ============ -->
+  <section class="section fade-in" id="resultado">
+    <span class="label"><span class="label-dot"></span>Resultado esperado</span>
+    <h2 class="section-title">O profissional que sai do AI Business Lab.</h2>
+    <p class="section-sub">Não um especialista técnico. Uma referência de IA aplicada dentro da equipe - capaz de transformar processos, liderar mudanças e construir operações inteligentes com responsabilidade e ética.</p>
+
+    <div class="result-card">
+      <p class="result-row">Mais rápido.</p>
+      <p class="result-row green">Mais estratégico.</p>
+      <p class="result-row yellow">Mais preparado.</p>
+      <p class="result-text">Profissionais capazes de trabalhar com IA de forma prática, acelerar entregas, reduzir tarefas repetitivas, criar automações e apoiar decisões com dados - tornando-se referência de IA aplicada dentro das suas equipes. Preparados para implementar IA de forma sustentável, segura e alinhada aos valores e objetivos estratégicos da organização.</p>
+    </div>
+  </section>
+
+  <!-- ============ CONEXÕES ============ -->
+  <section class="section fade-in" id="conexoes">
+    <span class="label"><span class="label-dot"></span>Conexões com o catálogo</span>
+    <h2 class="section-title">Ponto de entrada e <span class="accent">hub de expansão</span>.</h2>
+    <p class="section-sub">O AI Business Lab funciona como formação central para profissionais de negócios, com entradas e continuações claras dentro do ecossistema Alura.</p>
+
+    <div class="conn-list">
+      <div class="conn-block">
+        <p class="conn-from-label">Entrada recomendada</p>
+        <div class="conn-targets">
+          <span class="conn-target"><span class="arrow">→</span> Trilha de Lógica e Fundamentos</span>
+          <span class="conn-target"><span class="arrow">→</span> Cursos de Excel e Google Sheets</span>
+          <span class="conn-target"><span class="arrow">→</span> Cursos de Produtividade Digital</span>
+        </div>
+      </div>
+      <div class="conn-block">
+        <p class="conn-from-label">Continuação estratégica</p>
+        <div class="conn-targets">
+          <span class="conn-target"><span class="arrow">→</span> AI Leadership</span>
+          <span class="conn-target"><span class="arrow">→</span> Governança de Dados e IA</span>
+          <span class="conn-target"><span class="arrow">→</span> Gestão de Projetos com IA</span>
+        </div>
+      </div>
+      <div class="conn-block">
+        <p class="conn-from-label">Especializações técnicas</p>
+        <div class="conn-targets">
+          <span class="conn-target"><span class="arrow">→</span> AI Product Builder</span>
+          <span class="conn-target"><span class="arrow">→</span> Automação com n8n</span>
+          <span class="conn-target"><span class="arrow">→</span> Especialista em IA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-text">Alura · Henrique Thomaz Bruscagin - Time de Conteúdo · 2026</span>
+    <span class="footer-text">
+      <a class="footer-link">AI Business Lab</a> &nbsp;·&nbsp;      
+    </span>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
