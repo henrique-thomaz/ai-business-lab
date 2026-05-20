@@ -312,6 +312,18 @@
     .pains-grid { grid-template-columns: 1fr; }
     .nav-links { display: none; }
   }
+.blink-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--amber); background: rgba(245,158,11,0.12);
+  padding: 3px 10px; border-radius: 4px;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
 </style>
 </head>
 <body>
@@ -559,6 +571,7 @@
         <div class="pillar-body">
           <div class="pillar-header">
             <p class="pillar-name">Liderança de projetos com IA</p>
+			<span class="blink-badge">⚠ Camada ainda em refinamento</span>  
             <span class="pillar-tag">Operações Inteligentes</span>
           </div>
           <p class="pillar-sub">Coordenando iniciativas, equipes e operações orientadas por IA</p>
